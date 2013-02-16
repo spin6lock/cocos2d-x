@@ -29,6 +29,7 @@
 #include "cocos2d.h"
 #include "ExtensionMacros.h"
 #include "CCEditBox.h"
+#include "script_support/CCScriptSupport.h"
 
 NS_CC_EXT_BEGIN
 
@@ -36,7 +37,7 @@ NS_CC_EXT_BEGIN
 class CCEditBoxImpl
 {
 public:
-    CCEditBoxImpl(CCEditBox* pEditBox) : m_pEditBox(pEditBox), m_pDelegate(NULL)  {}
+    CCEditBoxImpl(CCEditBox* pEditBox) : m_pEditBox(pEditBox), m_pDelegate(NULL), m_nScriptEditBoxHandler(0) {}
     virtual ~CCEditBoxImpl() {}
     
     virtual bool initWithSize(const CCSize& size) = 0;
@@ -64,9 +65,22 @@ public:
     
     void setDelegate(CCEditBoxDelegate* pDelegate) { m_pDelegate = pDelegate; };
     CCEditBoxDelegate* getDelegate() { return m_pDelegate; };
+    void registerScriptEditBoxHandler(int handler) {
+        unregisterScriptEditBoxHandler();
+        m_nScriptEditBoxHandler = handler;
+    }
+    void unregisterScriptEditBoxHandler(void) {
+        if (m_nScriptEditBoxHandler)
+        {
+            CCScriptEngineManager::sharedManager()->getScriptEngine()->removeScriptHandler(m_nScriptEditBoxHandler);
+            m_nScriptEditBoxHandler = 0;
+        }
+    }
+    int getScriptEditBoxHandler(void) { return m_nScriptEditBoxHandler; }
     CCEditBox* getCCEditBox() { return m_pEditBox; };
 protected:
     CCEditBoxDelegate* m_pDelegate;
+    int m_nScriptEditBoxHandler;
     CCEditBox* m_pEditBox;
 };
 

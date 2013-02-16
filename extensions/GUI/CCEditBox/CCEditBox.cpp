@@ -44,8 +44,25 @@ CCEditBox::CCEditBox(void)
 CCEditBox::~CCEditBox(void)
 {
     CC_SAFE_DELETE(m_pEditBoxImpl);
+    unregisterScriptEditBoxHandler();
 }
 
+void CCEditBox::registerScriptEditBoxHandler(int handler)
+{
+    unregisterScriptEditBoxHandler();
+    if (m_pEditBoxImpl)
+    {
+        m_pEditBoxImpl->registerScriptEditBoxHandler(handler);
+    }
+}
+
+void CCEditBox::unregisterScriptEditBoxHandler(void)
+{
+    if (m_pEditBoxImpl)
+    {
+        m_pEditBoxImpl->unregisterScriptEditBoxHandler();
+    }
+}
 
 void CCEditBox::touchDownAction(CCObject *sender, CCControlEvent controlEvent)
 {    

@@ -212,6 +212,15 @@ static void editBoxCallbackFunc(const char* pText, void* ctx)
         thiz->getDelegate()->editBoxEditingDidEnd(thiz->getCCEditBox());
         thiz->getDelegate()->editBoxReturn(thiz->getCCEditBox());
     }
+
+    int handler = thiz->getScriptEditBoxHandler();
+    if (handler)
+    {
+        cocos2d::CCScriptEngineProtocol* pEngine = cocos2d::CCScriptEngineManager::sharedManager()->getScriptEngine();
+        pEngine->executeEvent(handler, "changed");
+        pEngine->executeEvent(handler, "ended");
+        pEngine->executeEvent(handler, "return");
+    }
 }
 
 void CCEditBoxImplAndroid::openKeyboard()

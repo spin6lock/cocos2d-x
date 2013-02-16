@@ -138,29 +138,6 @@
 {
 }
 
-- (BOOL)textFieldShouldBeginEditing:(NSTextField *)sender        // return NO to disallow editing.
-{
-    editState_ = YES;
-    cocos2d::extension::CCEditBoxDelegate* pDelegate = getEditBoxImplMac()->getDelegate();
-    if (pDelegate != NULL)
-    {
-        pDelegate->editBoxEditingDidBegin(getEditBoxImplMac()->getCCEditBox());
-    }
-    return YES;
-}
-
-- (BOOL)textFieldShouldEndEditing:(NSTextField *)sender
-{
-    editState_ = NO;
-    cocos2d::extension::CCEditBoxDelegate* pDelegate = getEditBoxImplMac()->getDelegate();
-    if (pDelegate != NULL)
-    {
-        pDelegate->editBoxEditingDidEnd(getEditBoxImplMac()->getCCEditBox());
-        pDelegate->editBoxReturn(getEditBoxImplMac()->getCCEditBox());
-    }
-    return YES;
-}
-
 /**
  * Delegate method called before the text has been changed.
  * @param textField The text field containing the text.
@@ -184,6 +161,40 @@
     return newLength <= getEditBoxImplMac()->getMaxLength();
 }
 
+- (void)controlTextDidBeginEditing:(NSNotification *)notification
+{
+    editState_ = YES;
+    cocos2d::extension::CCEditBoxDelegate* pDelegate = getEditBoxImplMac()->getDelegate();
+    if (pDelegate != NULL)
+    {
+        pDelegate->editBoxEditingDidBegin(getEditBoxImplMac()->getCCEditBox());
+    }
+    int handler = getEditBoxImplMac()->getScriptEditBoxHandler();
+    if (handler)
+    {
+        cocos2d::CCScriptEngineProtocol* pEngine = cocos2d::CCScriptEngineManager::sharedManager()->getScriptEngine();
+        pEngine->executeEvent(handler, "began");
+    }
+}
+
+- (void)controlTextDidEndEditing:(NSNotification *)notification
+{
+    editState_ = NO;
+    cocos2d::extension::CCEditBoxDelegate* pDelegate = getEditBoxImplMac()->getDelegate();
+    if (pDelegate != NULL)
+    {
+        pDelegate->editBoxEditingDidEnd(getEditBoxImplMac()->getCCEditBox());
+        pDelegate->editBoxReturn(getEditBoxImplMac()->getCCEditBox());
+    }
+    int handler = getEditBoxImplMac()->getScriptEditBoxHandler();
+    if (handler)
+    {
+        cocos2d::CCScriptEngineProtocol* pEngine = cocos2d::CCScriptEngineManager::sharedManager()->getScriptEngine();
+        pEngine->executeEvent(handler, "ended");
+        pEngine->executeEvent(handler, "return");
+    }
+}
+
 /**
  * Called each time when the text field's text has changed.
  */
@@ -193,6 +204,12 @@
     if (pDelegate != NULL)
     {
         pDelegate->editBoxTextChanged(getEditBoxImplMac()->getCCEditBox(), getEditBoxImplMac()->getText());
+    }
+    int handler = getEditBoxImplMac()->getScriptEditBoxHandler();
+    if (handler)
+    {
+        cocos2d::CCScriptEngineProtocol* pEngine = cocos2d::CCScriptEngineManager::sharedManager()->getScriptEngine();
+        pEngine->executeEvent(handler, "changed");
     }
 }
 

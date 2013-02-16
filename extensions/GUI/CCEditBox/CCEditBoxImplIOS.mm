@@ -146,6 +146,12 @@
     {
         pDelegate->editBoxEditingDidBegin(getEditBoxImplIOS()->getCCEditBox());
     }
+    int handler = getEditBoxImplIOS()->getScriptEditBoxHandler();
+    if (handler)
+    {
+        cocos2d::CCScriptEngineProtocol* pEngine = cocos2d::CCScriptEngineManager::sharedManager()->getScriptEngine();
+        pEngine->executeEvent(handler, "began");
+    }
     return YES;
 }
 
@@ -159,6 +165,13 @@
     {
         pDelegate->editBoxEditingDidEnd(getEditBoxImplIOS()->getCCEditBox());
         pDelegate->editBoxReturn(getEditBoxImplIOS()->getCCEditBox());
+    }
+    int handler = getEditBoxImplIOS()->getScriptEditBoxHandler();
+    if (handler)
+    {
+        cocos2d::CCScriptEngineProtocol* pEngine = cocos2d::CCScriptEngineManager::sharedManager()->getScriptEngine();
+        pEngine->executeEvent(handler, "ended");
+        pEngine->executeEvent(handler, "return");
     }
     return YES;
 }
@@ -196,6 +209,12 @@
     if (pDelegate != NULL)
     {
         pDelegate->editBoxTextChanged(getEditBoxImplIOS()->getCCEditBox(), getEditBoxImplIOS()->getText());
+    }
+    int handler = getEditBoxImplIOS()->getScriptEditBoxHandler();
+    if (handler)
+    {
+        cocos2d::CCScriptEngineProtocol* pEngine = cocos2d::CCScriptEngineManager::sharedManager()->getScriptEngine();
+        pEngine->executeEvent(handler, "changed");
     }
 }
 
