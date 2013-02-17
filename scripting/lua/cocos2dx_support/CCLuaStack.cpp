@@ -40,6 +40,8 @@ extern "C" {
 #include "Cocos2dxLuaLoader.h"
 #endif
 
+#include <string>
+
 NS_CC_BEGIN
 
 CCLuaStack *CCLuaStack::create(void)
@@ -145,6 +147,12 @@ int CCLuaStack::executeString(const char *codes)
 
 int CCLuaStack::executeScriptFile(const char* filename)
 {
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+    std::string code("require \"");
+    code.append(filename);
+    code.append("\"");
+    return executeString(code.c_str());
+#else
     ++m_callFromLua;
     int nRet = luaL_dofile(m_state, filename);
     --m_callFromLua;
@@ -158,6 +166,7 @@ int CCLuaStack::executeScriptFile(const char* filename)
         return nRet;
     }
     return 0;
+#endif
 }
 
 int CCLuaStack::executeGlobalFunction(const char* functionName)

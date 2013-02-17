@@ -23,6 +23,7 @@ THE SOFTWARE.
 ****************************************************************************/
 #include "Cocos2dxLuaLoader.h"
 #include <string>
+#include <algorithm>
 
 using namespace cocos2d;
 
@@ -31,9 +32,52 @@ extern "C"
     int loader_Android(lua_State *L)
     {
         std::string filename(luaL_checkstring(L, 1));
+        int pos = filename.rfind(".lua");
+        if (pos != std::string::npos)
+        {
+            filename = filename.substr(0, pos);
+        }
+        
+        pos = filename.find_first_of(".");
+        while (pos != std::string::npos)
+        {
+            filename.replace(pos, 1, "/");
+            pos = filename.find_first_of('.');
+        }
         filename.append(".lua");
+        
+        CCString* pFileContent = NULL;
+        
+        CCFileUtils* utils = CCFileUtils::sharedFileUtils();
+        
+        lua_getglobal(L, "package");
+        lua_getfield(L, -1, "path");
+        std::string searchpath(lua_tostring(L, -1));
+        lua_pop(L, 1);
+        int begin = 0;
+        int next = searchpath.find_first_of(";", 0);
 
-        CCString* pFileContent = CCString::createWithContentsOfFile(filename.c_str());
+        do
+        {
+            if (next == std::string::npos) next = searchpath.length();
+            std::string prefix = searchpath.substr(begin, next);
+            if (prefix[0] == '.' && prefix[1] == '/')
+            {
+                prefix = prefix.substr(2);
+            }
+            
+            pos = prefix.find("?.lua");
+            std::string path = prefix.substr(0, pos).append(filename);
+            path = utils->fullPathForFilename(path.c_str());
+            if (utils->isFileExist(path))
+            {
+                pFileContent = CCString::createWithContentsOfFile(path.c_str());
+                break;
+            }
+            
+            begin = next + 1;
+            next = searchpath.find_first_of(";", begin);
+        } while (begin < searchpath.length());
 
         if (pFileContent)
         {
