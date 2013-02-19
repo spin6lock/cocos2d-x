@@ -156,7 +156,6 @@ local CCObjectTypes = {
     "CCLabelBMFont",
     "CCTMXLayer",
     "CCTMXTiledMap",
-    "CCPointObject",
     "CCProjectionProtocol",
     "CCRibbonSegment",
     "CCScheduler",

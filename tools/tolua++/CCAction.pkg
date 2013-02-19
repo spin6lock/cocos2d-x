@@ -159,8 +159,8 @@ class CCJumpTo : public CCActionInterval
  Can't use struct in lua after binding struct
  So use class instead.
 */
-class ccBezierConfig {
-	ccBezierConfig(void);
+struct ccBezierConfig {
+    ccBezierConfig(void);
     CCPoint endPosition;
     CCPoint controlPoint_1;
     CCPoint controlPoint_2;

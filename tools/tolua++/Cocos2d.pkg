@@ -13,7 +13,6 @@ $pfile "CCPointExtension.pkg"
 $pfile "CCEGLViewProtocol.pkg"
 
 $pfile "CCFileUtils.pkg"
-$pfile "CCDrawingPrimitives.pkg"
 $pfile "CCAffineTransform.pkg"
 $pfile "CCApplication.pkg"
 $pfile "CCTouchDispatcher.pkg"

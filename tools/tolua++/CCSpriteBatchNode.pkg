@@ -31,8 +31,8 @@ class CCSpriteBatchNode : public CCNode
     void removeAllChildrenWithCleanup(bool cleanup);
     void sortAllChildren();
 
-    static CCSpriteBatchNode* createWithTexture(CCTexture2D *tex);
     static CCSpriteBatchNode* createWithTexture(CCTexture2D* tex, unsigned int capacity);
+    static CCSpriteBatchNode* createWithTexture(CCTexture2D *tex);
     static CCSpriteBatchNode* create(const char* fileImage, unsigned int capacity);
     static CCSpriteBatchNode* create(const char* fileImage);
 };
