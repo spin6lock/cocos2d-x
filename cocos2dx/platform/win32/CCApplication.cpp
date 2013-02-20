@@ -50,7 +50,6 @@ int CCApplication::run()
     }
 
     CCEGLView* pMainWnd = CCEGLView::sharedOpenGLView();
-    pMainWnd->centerWindow();
     ShowWindow(pMainWnd->getHWnd(), SW_SHOW);
 
     while (1)
@@ -155,29 +154,14 @@ TargetPlatform CCApplication::getTargetPlatform()
     return kTargetWindows;
 }
 
-void CCApplication::setResourceRootPath(const std::string& rootResDir)
-{
-    m_resourceRootPath = rootResDir;
-    std::replace(m_resourceRootPath.begin(), m_resourceRootPath.end(), '\\', '/');
-    if (m_resourceRootPath[m_resourceRootPath.length() - 1] != '/')
-    {
-        m_resourceRootPath += '/';
-    }
-    CCFileUtils* pFileUtils = CCFileUtils::sharedFileUtils();
-    std::vector<std::string> searchPaths = pFileUtils->getSearchPaths();
-    searchPaths.insert(searchPaths.begin(), m_resourceRootPath);
-    pFileUtils->setSearchPaths(searchPaths);
-}
-
-const std::string& CCApplication::getResourceRootPath(void)
-{
-    return m_resourceRootPath;
-}
-
 void CCApplication::setStartupScriptFilename(const std::string& startupScriptFile)
 {
     m_startupScriptFilename = startupScriptFile;
-    std::replace(m_startupScriptFilename.begin(), m_startupScriptFilename.end(), '\\', '/');
+    int pos;
+    while ((pos = m_startupScriptFilename.find_first_of("\\")) != std::string::npos)
+    {
+        m_startupScriptFilename.replace(pos, 1, "/");
+    }
 }
 
 NS_CC_END

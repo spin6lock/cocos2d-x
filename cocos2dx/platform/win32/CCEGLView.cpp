@@ -187,7 +187,7 @@ CCEGLView::CCEGLView()
 , m_fFrameZoomFactor(1.0f)
 , m_bSupportTouch(false)
 {
-    strcpy(m_szViewName, "Cocos2dxWin32");
+    strcpy(m_szViewName, "quick-cocos2d-x LuaHostWin32");
 }
 
 CCEGLView::~CCEGLView()
@@ -271,6 +271,8 @@ bool CCEGLView::Create()
     {
         CC_BREAK_IF(m_hWnd);
 
+        s_pMainWindow = this;
+
         HINSTANCE hInstance = GetModuleHandle( NULL );
         WNDCLASS  wc;        // Windows Class Structure
 
@@ -316,7 +318,6 @@ bool CCEGLView::Create()
 		if(!bRet) destroyGL();
         CC_BREAK_IF(!bRet);
 
-        s_pMainWindow = this;
         bRet = true;
     } while (0);
 
@@ -701,6 +702,11 @@ void CCEGLView::centerWindow()
     SetWindowPos(m_hWnd, 0, offsetX, offsetY, 0, 0, SWP_NOCOPYBITS | SWP_NOSIZE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 }
 
+void CCEGLView::moveWindow(int left, int top)
+{
+    SetWindowPos(m_hWnd, 0, left, top, 0, 0, SWP_NOCOPYBITS | SWP_NOSIZE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+}
+
 void CCEGLView::setViewPortInPoints(float x , float y , float w , float h)
 {
     glViewport((GLint)(x * m_fScaleX * m_fFrameZoomFactor + m_obViewPortRect.origin.x * m_fFrameZoomFactor),
@@ -719,18 +725,16 @@ void CCEGLView::setScissorInPoints(float x , float y , float w , float h)
 
 CCEGLView* CCEGLView::sharedOpenGLView()
 {
-    static CCEGLView* s_pEglView = NULL;
-    if (s_pEglView == NULL)
+    if (s_pMainWindow == NULL)
     {
-        s_pEglView = new CCEGLView();
-		if(!s_pEglView->Create())
+        CCEGLView *view = new CCEGLView();
+		if(!view->Create())
 		{
-			delete s_pEglView;
-			s_pEglView = NULL;
+			delete view;
 		}
     }
 
-    return s_pEglView;
+    return s_pMainWindow;
 }
 
 NS_CC_END

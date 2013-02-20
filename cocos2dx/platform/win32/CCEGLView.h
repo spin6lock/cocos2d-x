@@ -68,6 +68,7 @@ public:
     void setFrameZoomFactor(float fZoomFactor);
 	float getFrameZoomFactor();
     void centerWindow();
+    void moveWindow(int left, int top);
 
     typedef void (*LPFN_ACCELEROMETER_KEYHOOK)( UINT message,WPARAM wParam, LPARAM lParam );
     void setAccelerometerKeyHook( LPFN_ACCELEROMETER_KEYHOOK lpfnAccelerometerKeyHook );
@@ -80,6 +81,7 @@ public:
     @brief    get the shared main open gl window
     */
     static CCEGLView* sharedOpenGLView();
+    static void purgeSharedOpenGLView();
 
 protected:
 

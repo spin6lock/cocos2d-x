@@ -42,7 +42,7 @@ extern "C"
         while (pos != std::string::npos)
         {
             filename.replace(pos, 1, "/");
-            pos = filename.find_first_of('.');
+            pos = filename.find_first_of(".");
         }
         filename.append(".lua");
         
