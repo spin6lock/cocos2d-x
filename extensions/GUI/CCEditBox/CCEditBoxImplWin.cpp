@@ -244,16 +244,15 @@ void CCEditBoxImplWin::openKeyboard()
 		m_pDelegate->editBoxReturn(m_pEditBox);
 	}
 
-    int handler = thiz->getScriptEditBoxHandler();
-    if (handler)
+	if (m_nScriptEditBoxHandler)
     {
         cocos2d::CCScriptEngineProtocol* pEngine = cocos2d::CCScriptEngineManager::sharedManager()->getScriptEngine();
         if (didChange)
         {
-            pEngine->executeEvent(handler, "changed");
+            pEngine->executeEvent(m_nScriptEditBoxHandler, "changed");
         }
-        pEngine->executeEvent(handler, "ended");
-        pEngine->executeEvent(handler, "return");
+        pEngine->executeEvent(m_nScriptEditBoxHandler, "ended");
+        pEngine->executeEvent(m_nScriptEditBoxHandler, "return");
     }
 }
 

@@ -77,7 +77,7 @@ extern "C"
             
             begin = next + 1;
             next = searchpath.find_first_of(";", begin);
-        } while (begin < searchpath.length());
+        } while (begin < (int)searchpath.length());
 
         if (pFileContent)
         {
