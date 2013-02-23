@@ -96,6 +96,14 @@ CCPolygonShape* CCPolygonShape::create(CCPoint* vertices, unsigned int numVertic
     return polygon;
 }
 
+CCPolygonShape* CCPolygonShape::create(CCPointArray* vertices)
+{
+    CCPolygonShape* polygon = new CCPolygonShape();
+    polygon->initWithVertices(vertices);
+    polygon->autorelease();
+    return polygon;
+}
+
 bool CCPolygonShape::initWithVertices(CCPoint* vertices, unsigned int numVertices)
 {
     m_numberOfVertices = numVertices;
@@ -106,6 +114,14 @@ bool CCPolygonShape::initWithVertices(CCPoint* vertices, unsigned int numVertice
         m_verticesDraw[i] = m_vertices[i] = vertices[i];
     }
     return true;
+}
+
+bool CCPolygonShape::initWithVertices(CCPointArray* vertices)
+{
+    CCPoint* points = vertices->fetchPoints();
+    bool ret = initWithVertices(points, vertices->count());
+    delete []points;
+    return ret;
 }
 
 CCPolygonShape::~CCPolygonShape(void)

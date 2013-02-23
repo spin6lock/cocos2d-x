@@ -1,0 +1,59 @@
+
+$#include "draw_nodes/CCShapeNode.h"
+
+class CCShapeNode : public CCNode
+{
+public:
+    const ccColor4F& getColor(void);
+    void setColor(const ccColor4F& color);
+    float getLineWidth(void);
+    void setLineWidth(float lineWidth);
+    GLushort getLineStipple(void);
+    void setLineStipple(GLushort pattern);
+    bool isLineStippleEnabled(void);
+    void setLineStippleEnabled(bool lineStippleEnabled);
+};
+
+class CCCircleShape : public CCShapeNode
+{
+public:
+    static CCCircleShape* create(float radius);
+    float getRadius(void);
+    void setRadius(float radius);
+    float getAngle(void);
+    void setAngle(float angle);
+    unsigned int getSegments(void);
+    void setSegments(unsigned int segments);
+    bool isDrawLineToCenter(void);
+    void setDrawLineToCenter(bool drawLineToCenter);
+    float getScaleX(void);
+    void setScaleX(float xScale);
+    float getScaleY(void);
+    void setScaleY(float yScale);
+};
+
+class CCRectShape : public CCShapeNode
+{
+public:
+    static CCRectShape* create(const CCSize& size);
+    const CCSize& getSize(void);
+    void setSize(const CCSize& size);
+    bool isFill(void);
+    void setFill(bool fill);
+};
+
+class CCPointShape : public CCShapeNode
+{
+public:
+    static CCPointShape* create(void);
+};
+
+class CCPolygonShape : public CCShapeNode
+{
+public:
+    static CCPolygonShape* create(CCPointArray* vertices);
+    bool isFill(void);
+    void setFill(bool fill);
+    bool isClose(void);
+    void setClose(bool close);
+};

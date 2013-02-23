@@ -424,6 +424,15 @@ void CCDrawNode::drawPolygon(CCPoint *verts, unsigned int count, const ccColor4F
     free(extrude);
 }
 
+void CCDrawNode::drawPolygon(CCPointArray *verts, const ccColor4F &fillColor, float borderWidth, const ccColor4F &borderColor)
+{
+    int count = verts->count();
+    CCAssert(count > 0, "verts is empty");
+    CCPoint *points = verts->fetchPoints();
+    drawPolygon(points, count, fillColor, borderWidth, borderColor);
+    delete []points;
+}
+
 void CCDrawNode::clear()
 {
     m_nBufferCount = 0;

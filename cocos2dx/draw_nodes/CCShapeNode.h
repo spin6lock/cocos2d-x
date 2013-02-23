@@ -226,6 +226,7 @@ class CCPolygonShape : public CCShapeNode
 {
 public:
     static CCPolygonShape* create(CCPoint* vertices, unsigned int numVertices);
+    static CCPolygonShape* create(CCPointArray* vertices);
     ~CCPolygonShape(void);
     
     bool isFill(void) {
@@ -254,6 +255,7 @@ protected:
     {
     }
     bool initWithVertices(CCPoint* vertices, unsigned int numVertices);
+    bool initWithVertices(CCPointArray* vertices);
     
     CCPoint* m_vertices;
     CCPoint* m_verticesDraw;
