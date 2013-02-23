@@ -39,6 +39,7 @@ cocos2d.cpp \
 CCDirector.cpp \
 draw_nodes/CCDrawingPrimitives.cpp \
 draw_nodes/CCDrawNode.cpp \
+draw_nodes/CCShapeNode.cpp \
 effects/CCGrabber.cpp \
 effects/CCGrid.cpp \
 kazmath/src/aabb.c \
