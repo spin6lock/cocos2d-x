@@ -3,7 +3,6 @@ $#include "draw_nodes/CCShapeNode.h"
 
 class CCShapeNode : public CCNode
 {
-public:
     const ccColor4F& getColor(void);
     void setColor(const ccColor4F& color);
     float getLineWidth(void);
@@ -16,7 +15,6 @@ public:
 
 class CCCircleShape : public CCShapeNode
 {
-public:
     static CCCircleShape* create(float radius);
     float getRadius(void);
     void setRadius(float radius);
@@ -34,7 +32,6 @@ public:
 
 class CCRectShape : public CCShapeNode
 {
-public:
     static CCRectShape* create(const CCSize& size);
     const CCSize& getSize(void);
     void setSize(const CCSize& size);
@@ -44,13 +41,11 @@ public:
 
 class CCPointShape : public CCShapeNode
 {
-public:
     static CCPointShape* create(void);
 };
 
 class CCPolygonShape : public CCShapeNode
 {
-public:
     static CCPolygonShape* create(CCPointArray* vertices);
     bool isFill(void);
     void setFill(bool fill);

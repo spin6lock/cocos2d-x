@@ -43,8 +43,8 @@ class CCLayerColor : public CCLayer
 	void setOpacityModifyRGB(bool bValue);
     bool isOpacityModifyRGB(void);
 
-    static CCLayerColor * create(ccColor4B color, GLfloat width, GLfloat height);
-    static CCLayerColor * create(ccColor4B color);
+    static CCLayerColor* create(ccColor4B color, GLfloat width, GLfloat height);
+    static CCLayerColor* create(ccColor4B color);
 };
 
 class CCLayerGradient : public CCLayerColor

@@ -1,10 +1,7 @@
 
 class  CCCamera : public CCObject
 {
-    CCCamera(void);
-
-    void init(void);
-    char * description(void);
+    char *description(void);
 
     void setDirty(bool bValue);
     bool isDirty(void);

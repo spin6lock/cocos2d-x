@@ -48,14 +48,11 @@ class CCEGLViewProtocol
      *                         [3] kResolutionShowAll  Full screen with black border, if the design resolution ratio of width and height is different from the screen resolution ratio, two black border will be shown on the screen;
      */
     void setDesignResolutionSize(float width, float height, ResolutionPolicy resolutionPolicy);
-    
+
     /** Get design resolution size.
      *  Default resolution size is the same as 'getFrameSize'.
      */
     virtual const CCSize&  getDesignResolutionSize() const;
-
-    /** Set touch delegate */
-    void setTouchDelegate(EGLTouchDelegate * pDelegate);
 
     /**
      * Set opengl view port rectangle with points.

@@ -1,10 +1,6 @@
 
 class CCSpriteBatchNode : public CCNode
 {
-    CCTextureAtlas* getTextureAtlas(void);
-    void setTextureAtlas(CCTextureAtlas* textureAtlas);
-    CCArray* getDescendants(void);
-
     void increaseAtlasCapacity();
     void removeChildAtIndex(unsigned int index, bool doCleanup);
     void insertChild(CCSprite *child, unsigned int index);
@@ -21,15 +17,6 @@ class CCSpriteBatchNode : public CCNode
     CCTexture2D* getTexture(void);
     void setBlendFunc(ccBlendFunc blendFunc);
     ccBlendFunc getBlendFunc(void);
-
-	void addChild(CCNode * child);
-    void addChild(CCNode * child, int zOrder);
-    void addChild(CCNode * child, int zOrder, int tag);
-    void reorderChild(CCNode * child, int zOrder);
-
-    void removeChild(CCNode* child, bool cleanup);
-    void removeAllChildrenWithCleanup(bool cleanup);
-    void sortAllChildren();
 
     static CCSpriteBatchNode* createWithTexture(CCTexture2D* tex, unsigned int capacity);
     static CCSpriteBatchNode* createWithTexture(CCTexture2D *tex);

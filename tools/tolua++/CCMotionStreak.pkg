@@ -5,7 +5,7 @@ class CCMotionStreak : public CCNode
 
     void tintWithColor(ccColor3B colors);
     void reset();
-
+    
     void setPosition(CCPoint& position);
 
     CCTexture2D* getTexture(void);

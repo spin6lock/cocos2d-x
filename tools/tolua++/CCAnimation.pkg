@@ -1,22 +1,13 @@
 
 class CCAnimationFrame : public CCObject
 {
-    CCAnimationFrame();
-    ~CCAnimationFrame();
-	CCObject* copyWithZone(CCZone* pZone);
-
-    bool initWithSpriteFrame(CCSpriteFrame* spriteFrame, float delayUnits, CCDictionary* userInfo);
-
     CCSpriteFrame* getSpriteFrame();
     void setSpriteFrame(CCSpriteFrame* pSpFrame);
-
     float getDelayUnits();
     void setDelayUnits(float fDelayUnits);
-
-    CCDictionary*  getUserInfo();
+    CCDictionary* getUserInfo();
     void setUserInfo(CCDictionary* pDict);
 };
-
 
 class CCAnimation : public CCObject
 {
@@ -30,18 +21,14 @@ class CCAnimation : public CCObject
     void addSpriteFrameWithTexture(CCTexture2D* pobTexture, const CCRect& rect);
 
     float getTotalDelayUnits();
-
     float getDelayPerUnit();
     void setDelayPerUnit(float fDelayPerUnits);
-
     float getDuration();
 
 	CCAnimation* copy();
-
     CCArray* getFrames();
+
     void setFrames(CCArray* pFrames);
-
-
     bool getRestoreOriginalFrame();
     void setRestoreOriginalFrame(bool bRestoreFrame);
 

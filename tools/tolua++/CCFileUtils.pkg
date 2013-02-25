@@ -3,7 +3,6 @@ class CCFileUtils
 {
     static CCFileUtils* sharedFileUtils();
     static void purgeFileUtils();
-    
     void purgeCachedEntries();
 
     std::string fullPathForFilename(const char *pszFileName);
@@ -13,7 +12,7 @@ class CCFileUtils
     void addSearchPath(const char* path);
 
     std::string getWriteablePath();
-    
+
     void setPopupNotify(bool bNotify);
     bool isPopupNotify();
 };

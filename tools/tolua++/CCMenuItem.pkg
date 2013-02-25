@@ -26,11 +26,6 @@ class CCMenuItemLabel : public CCMenuItem
 	void setLabel(CCNode* pLabel);
 	CCNode* getLabel();
 
-	void activate();
-    void selected();
-    void unselected();
-    void setEnabled(bool enabled);
-
 	void setOpacityModifyRGB(bool bValue);
     bool isOpacityModifyRGB(void);
 
@@ -74,18 +69,13 @@ class CCMenuItemSprite : public CCMenuItem
 	void setDisabledImage(CCNode* pImage);
 	CCNode* getDisabledImage();
 
-	void selected();
-    void unselected();
-    void setEnabled(bool bEnabled);
-
     void setOpacityModifyRGB(bool bValue);
     bool isOpacityModifyRGB(void);
 
     static CCMenuItemSprite * create(CCNode* normalSprite,
-                                                   CCNode* selectedSprite,
-                                                   CCNode* disabledSprite);
-    static CCMenuItemSprite * create(CCNode* normalSprite,
-                                                   CCNode* selectedSprite);
+                                     CCNode* selectedSprite,
+                                     CCNode* disabledSprite);
+    static CCMenuItemSprite * create(CCNode* normalSprite, CCNode* selectedSprite);
 };
 
 class CCMenuItemImage : public CCMenuItemSprite
@@ -99,11 +89,8 @@ class CCMenuItemImage : public CCMenuItemSprite
     void setSelectedSpriteFrame(CCSpriteFrame* frame);
     void setDisabledSpriteFrame(CCSpriteFrame* frame);
 
-    static CCMenuItemImage* create(const char* normalImage,
-                                                const char* selectedImage,
-                                                const char* disabledImage);
-    static CCMenuItemImage* create(const char* normalImage,
-                                                const char* selectedImage);
+    static CCMenuItemImage* create(const char* normalImage, const char* selectedImage, const char* disabledImage);
+    static CCMenuItemImage* create(const char* normalImage, const char* selectedImage);
     static CCMenuItemImage* create();
 };
 
@@ -120,11 +107,6 @@ class CCMenuItemToggle : public CCMenuItem
 
 	void addSubItem(CCMenuItem *item);
     CCMenuItem* selectedItem();
-
-	void activate();
-    void selected();
-    void unselected();
-    void setEnabled(bool var);
 
     void setOpacityModifyRGB(bool bValue);
     bool isOpacityModifyRGB(void);

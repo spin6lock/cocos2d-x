@@ -1,12 +1,11 @@
 class CCParticleBatchNode : public CCNode, public CCTextureProtocol
 {
 public:
-    void addChild(CCNode * child);
-    void addChild(CCNode * child, int zOrder);
     void addChild(CCNode * child, int zOrder, int tag);
+    void addChild(CCNode * child, int zOrder);
+    void addChild(CCNode * child);
 
     void insertChild(CCParticleSystem* pSystem, unsigned int index);
-
     void removeChild(CCNode* child, bool cleanup);
     void reorderChild(CCNode * child, int zOrder);
     void removeChildAtIndex(unsigned int index, bool doCleanup);
@@ -15,6 +14,7 @@ public:
 
     CCTexture2D* getTexture(void);
     void setTexture(CCTexture2D *texture);
+
     void setBlendFunc(ccBlendFunc blendFunc);
     ccBlendFunc getBlendFunc(void);
 

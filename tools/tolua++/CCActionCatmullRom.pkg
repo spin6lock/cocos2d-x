@@ -1,19 +1,14 @@
 
 class CCCardinalSplineTo : public CCActionInterval
 {
-	CCCardinalSplineTo* copyWithZone(CCZone* pZone);
-    CCActionInterval* reverse();
     CCPointArray* getPoints();
     void  setPoints(CCPointArray* points);
-
 	static CCCardinalSplineTo* create(float duration, CCPointArray* points, float tension);
 };
 
 
 class CCCardinalSplineBy : public CCCardinalSplineTo
 {
-    CCActionInterval* reverse();
-
 	static CCCardinalSplineBy* create(float duration, CCPointArray* points, float tension);
 };
 

@@ -7,56 +7,20 @@ class CCPoint
     float y;
     CCPoint(float x, float y);
     CCPoint(void);
-
     bool equals(const CCPoint & target) const ;
 };
 class CCPointArray : public CCObject
 {
-public:
-    
-    /** creates and initializes a Points array with capacity */
     static CCPointArray* create(unsigned int capacity);
-    
-    ~CCPointArray(void);
-    CCPointArray(void);
-    
-    /** initializes a Catmull Rom config with a capacity hint */
-    bool initWithCapacity(unsigned int capacity);
-    
-    /** appends a point */
-    void add(CCPoint controlPoint);
-    
-    /** inserts a controlPoint at index */
-    void insert(CCPoint &controlPoint, unsigned int index);
-    
-    /** replaces an existing controlPoint at index */
-    void replace(CCPoint &controlPoint, unsigned int index);
-    
-    /** get the value of a controlPoint at a given index */
+    void add(CCPoint point);
+    void insert(CCPoint &point, unsigned int index);
+    void replace(CCPoint &point, unsigned int index);
     CCPoint get(unsigned int index);
-    
-    /** deletes a point at a given index */
     void remove(unsigned int index);
-    
-    /** deletes all points */
     void removeAll(void);
-    
-    /** returns the number of objects of the point array */
     unsigned int count(void);
-    
-    /** returns a new copy of the array reversed. User is responsible for releasing this copy */
     CCPointArray* reverse(void);
-    
-    /** reverse the current point array inline, without generating a new one */
     void reverseInline(void);
-    
-    virtual CCObject* copyWithZone(CCZone *zone);
-    
-    const std::vector<CCPoint*>* getPoints(void);
-    void setPoints(std::vector<CCPoint*> *controlPoints);
-    
-    /** returns a array of points, User must delete [] this array */
-    CCPoint *fetchPoints(void);
 };
 
 class CCSize
@@ -65,7 +29,6 @@ class CCSize
     float height;
     CCSize(float width, float height);
     CCSize(void);
-
     bool equals(const CCSize & target) const;
 };
 
@@ -75,7 +38,6 @@ class CCRect
     CCSize  size;
     CCRect(float x, float y, float width, float height);
     CCRect(void);
-
     float getMinX();
 	float getMidX();
 	float getMaxX();

@@ -19,17 +19,14 @@ class CCSprite : public CCNode
 	void setDirty(bool bDirty);
 	bool isDirty(void);
 
-	ccV3F_C4B_T2F_Quad getQuad(void);
-
 	CCRect getTextureRect(void);
-	//bool isUsesBatchNode(void);
 	bool isTextureRectRotated(void);
 
 	void setAtlasIndex(unsigned int uAtlasIndex);
 	unsigned int getAtlasIndex(void);
 	//void setUsesSpriteBatchNode(bool bUsesSpriteBatchNode);
-	void setTextureAtlas(CCTextureAtlas *pobTextureAtlas);
-	CCTextureAtlas* getTextureAtlas(void);
+	//void setTextureAtlas(CCTextureAtlas *pobTextureAtlas);
+	//CCTextureAtlas* getTextureAtlas(void);
 	//void setSpriteBatchNode(CCSpriteBatchNode *pobSpriteBatchNode);
 	//CCSpriteBatchNode* getSpriteBatchNode(void);
 	//void setHonorParentTransform(ccHonorParentTransform eHonorParentTransform);
@@ -39,29 +36,10 @@ class CCSprite : public CCNode
 
 	CCPoint getOffsetPosition(void);
 
-	void ignoreAnchorPointForPosition(bool newValue);
 	void setFlipX(bool bFlipX);
 	void setFlipY(bool bFlipY);
 	bool isFlipX(void);
 	bool isFlipY(void);
-
-	void removeChild(CCNode* pChild, bool bCleanUp);
-	void removeAllChildrenWithCleanup(bool bCleanup);
-	void reorderChild(CCNode* pChild, int zOrder);
-	void addChild(CCNode* pChild);
-	void addChild(CCNode* pChild, int zOrder);
-	void addChild(CCNode* pChild, int zOrder, int tag);
-	void sortAllChildren();
-	//void setPosition(CCPoint pos);
-	void setRotation(float rotation);
-	void setSkewX(float sx);
-	void setSkewY(float sy);
-	void setScale(float fScale);
-	void setScaleX(float fScaleX);
-	void setScaleY(float fScaleY);
-	void setVertexZ(float fVertexZ);
-	void setAnchorPoint(const CCPoint & anchor);
-	void setVisible(bool bVisible);
 
 	void setOpacity(GLubyte opacity);
 	GLubyte getOpacity(void);
@@ -87,8 +65,8 @@ class CCSprite : public CCNode
 	CCSpriteBatchNode* getBatchNode();
 	void setDisplayFrameWithAnimationName(const char *animationName, int frameIndex);
 
-	static CCSprite* createWithTexture(CCTexture2D *pTexture);
 	static CCSprite* createWithTexture(CCTexture2D *pTexture, CCRect rect);
+	static CCSprite* createWithTexture(CCTexture2D *pTexture);
 	static CCSprite* createWithSpriteFrame(CCSpriteFrame *pSpriteFrame);
 	static CCSprite* createWithSpriteFrameName(const char *pszSpriteFrameName);
 	static CCSprite* create(const char *pszFileName, CCRect rect);

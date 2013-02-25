@@ -9,7 +9,6 @@ class CCDictionary : public CCObject
     const CCString* valueForKey(const std::string& key);
     const CCString* valueForKey(int key);
 
-
     void setObject(CCObject* pObject, const std::string& key);
     void setObject(CCObject* pObject, int key);
 
@@ -21,6 +20,4 @@ class CCDictionary : public CCObject
     static CCDictionary* create();
     static CCDictionary* createWithDictionary(CCDictionary* srcDict);
     static CCDictionary* createWithContentsOfFile(const char *pFileName);
-
 };
-

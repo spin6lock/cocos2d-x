@@ -1,9 +1,6 @@
 
 class CCParallaxNode : public CCNode
 {
-    // struct _ccArray* getParallaxArray();
-    // void setParallaxArray(struct _ccArray * pval);
-
     void addChild(CCNode * child, unsigned int z, CCPoint parallaxRatio, CCPoint positionOffset);
     void addChild(CCNode * child, unsigned int zOrder, int tag);
 
