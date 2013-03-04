@@ -158,6 +158,7 @@ int CCLuaEngine::executeSchedule(int nHandler, float dt, CCNode* pNode/* = NULL*
 int CCLuaEngine::executeLayerTouchEvent(CCLayer* pLayer, int eventType, CCTouch *pTouch)
 {
     CCTouchScriptHandlerEntry* pScriptHandlerEntry = pLayer->getScriptTouchHandlerEntry();
+    if (!pScriptHandlerEntry) return 0;
     int nHandler = pScriptHandlerEntry->getHandler();
     if (!nHandler) return 0;
     
@@ -192,6 +193,7 @@ int CCLuaEngine::executeLayerTouchEvent(CCLayer* pLayer, int eventType, CCTouch 
 int CCLuaEngine::executeLayerTouchesEvent(CCLayer* pLayer, int eventType, CCSet *pTouches)
 {
     CCTouchScriptHandlerEntry* pScriptHandlerEntry = pLayer->getScriptTouchHandlerEntry();
+    if (!pScriptHandlerEntry) return 0;
     int nHandler = pScriptHandlerEntry->getHandler();
     if (!nHandler) return 0;
     
