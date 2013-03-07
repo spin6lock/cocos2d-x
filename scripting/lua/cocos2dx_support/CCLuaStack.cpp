@@ -33,6 +33,7 @@ extern "C" {
 }
 
 #include "LuaCocos2d.h"
+#include "CCZipFile.h"
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 #include "platform/ios/CCLuaObjcBridge.h"
@@ -72,6 +73,10 @@ bool CCLuaStack::init(void)
 #elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
     addLuaLoader(loader_Android);
 #endif
+    
+    lua_pushcfunction(m_state, loadChunksFromZip);
+    lua_setglobal(m_state, "CCLoadChunksFromZip");
+    
     return true;
 }
 
@@ -116,7 +121,6 @@ void CCLuaStack::addLuaLoader(lua_CFunction func)
     
     lua_pop(m_state, 1);
 }
-
 
 void CCLuaStack::removeScriptObjectByCCObject(CCObject* pObj)
 {
@@ -383,6 +387,49 @@ bool CCLuaStack::executeAssert(bool cond, const char *msg)
     lua_pushfstring(m_state, "ASSERT FAILED ON LUA EXECUTE: %s", msg ? msg : "unknown");
     lua_error(m_state);
     return true;
+}
+
+int cc_lua_require(lua_State *L)
+{
+    lua_pushvalue(L, lua_upvalueindex(1));
+    lua_call(L, 0, 1);
+    return 1;
+}
+
+int CCLuaStack::loadChunksFromZip(lua_State *L)
+{
+    const char *zipFilename = lua_tostring(L, -1);
+    string zipFilePath = CCFileUtils::sharedFileUtils()->fullPathForFilename(zipFilename);
+    CCZipFile *zip = CCZipFile::create(zipFilePath.c_str());
+    if (zip)
+    {
+        lua_getglobal(L, "package");
+        lua_getfield(L, -1, "preload");
+        
+        string filename = zip->getFirstFilename();
+        while (filename.length())
+        {
+            unsigned long bufferSize = 0;
+            unsigned char *buffer = zip->getFileData(filename.c_str(), &bufferSize);
+            if (bufferSize)
+            {
+                luaL_loadbuffer(L, (char*)buffer, bufferSize, filename.c_str());
+                lua_pushcclosure(L, &cc_lua_require, 1);
+                lua_setfield(L, -2, filename.c_str());
+                delete []buffer;
+                CCLOG("Load chunk %s", filename.c_str());
+            }
+            filename = zip->getNextFilename();
+        }
+        
+        lua_pop(L, 2);
+        lua_pushboolean(L, 1);
+    }
+    else
+    {
+        lua_pushboolean(L, 0);
+    }
+    return 1;
 }
 
 NS_CC_END

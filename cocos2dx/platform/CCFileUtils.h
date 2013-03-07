@@ -247,6 +247,11 @@ public:
     virtual void setSearchPaths(const std::vector<std::string>& searchPaths);
     
     /**
+     * Set search root path.
+     */
+    void setSearchRootPath(const char* path);
+    
+    /**
       * Add search path.
       *
       * @since v2.1
@@ -352,6 +357,8 @@ protected:
      */
     virtual CCArray* createCCArrayWithContentsOfFile(const std::string& filename);
     
+    void updateSearchPathArrayCheck(void);
+    
     /** Dictionary used to lookup filenames based on a key.
      *  It is used internally by the following methods:
      *
@@ -372,6 +379,7 @@ protected:
      * The lower index of the element in this vector, the higher priority for this search path.
      */
     std::vector<std::string> m_searchPathArray;
+    std::vector<std::string> m_searchPathArrayCheck;
     
     /**
      *  The default root path of resources.
