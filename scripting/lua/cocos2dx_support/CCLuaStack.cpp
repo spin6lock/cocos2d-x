@@ -75,7 +75,7 @@ bool CCLuaStack::init(void)
 #endif
     
     lua_pushcfunction(m_state, loadChunksFromZip);
-    lua_setglobal(m_state, "CCLoadChunksFromZip");
+    lua_setglobal(m_state, "CCLuaLoadChunksFromZip");
     
     return true;
 }
