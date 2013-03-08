@@ -359,6 +359,7 @@ bool CCFileUtils::init()
 {
     m_searchPathArray.push_back(m_strDefaultResRootPath);
     m_searchResolutionsOrderArray.push_back("");
+    updateSearchPathArrayCheck();
     return true;
 }
 
