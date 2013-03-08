@@ -33,7 +33,7 @@ extern "C" {
 }
 
 #include "LuaCocos2d.h"
-#include "CCZipFile.h"
+#include "platform/CCZipFile.h"
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
 #include "platform/ios/CCLuaObjcBridge.h"
@@ -399,36 +399,69 @@ int cc_lua_require(lua_State *L)
 int CCLuaStack::loadChunksFromZip(lua_State *L)
 {
     const char *zipFilename = lua_tostring(L, -1);
-    string zipFilePath = CCFileUtils::sharedFileUtils()->fullPathForFilename(zipFilename);
-    CCZipFile *zip = CCZipFile::create(zipFilePath.c_str());
-    if (zip)
+    CCFileUtils *utils = CCFileUtils::sharedFileUtils();
+    string zipFilePath = utils->fullPathForFilename(zipFilename);
+    
+    do
     {
-        lua_getglobal(L, "package");
-        lua_getfield(L, -1, "preload");
-        
-        string filename = zip->getFirstFilename();
-        while (filename.length())
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+        string tmpFilePath = utils->getWriteablePath().append("cc_load_chunks.tmp");
+        unsigned long size = 0;
+        unsigned char *buffer = utils->getFileData(zipFilePath.c_str(), "rb", &size);
+        FILE *tmp = fopen(tmpFilePath.c_str(), "wb");
+        if (tmp)
         {
-            unsigned long bufferSize = 0;
-            unsigned char *buffer = zip->getFileData(filename.c_str(), &bufferSize);
-            if (bufferSize)
+            fwrite(buffer, 1, size, tmp);
+            fclose(tmp);
+            delete []buffer;
+            zipFilePath = tmpFilePath;
+            CCLOG("CCLoadChunksFromZip() - copy zip file to %s", tmpFilePath.c_str());
+        }
+        else
+        {
+            CCLOG("CCLoadChunksFromZip() - copy zip file to %s failure", tmpFilePath.c_str());
+            lua_pushboolean(L, 0);
+            break;
+        }
+#endif
+        
+        CCZipFile *zip = CCZipFile::create(zipFilePath.c_str());
+        if (zip)
+        {
+            CCLOG("CCLoadChunksFromZip() - load zip file: %s", zipFilePath.c_str());
+            lua_getglobal(L, "package");
+            lua_getfield(L, -1, "preload");
+            
+            string filename = zip->getFirstFilename();
+            while (filename.length())
             {
-                luaL_loadbuffer(L, (char*)buffer, bufferSize, filename.c_str());
-                lua_pushcclosure(L, &cc_lua_require, 1);
-                lua_setfield(L, -2, filename.c_str());
-                delete []buffer;
-                CCLOG("Load chunk %s", filename.c_str());
+                unsigned long bufferSize = 0;
+                unsigned char *buffer = zip->getFileData(filename.c_str(), &bufferSize);
+                if (bufferSize)
+                {
+                    luaL_loadbuffer(L, (char*)buffer, bufferSize, filename.c_str());
+                    lua_pushcclosure(L, &cc_lua_require, 1);
+                    lua_setfield(L, -2, filename.c_str());
+                    delete []buffer;
+                    CCLOG("CCLoadChunksFromZip() - chunk %s", filename.c_str());
+                }
+                filename = zip->getNextFilename();
             }
-            filename = zip->getNextFilename();
+            
+            lua_pop(L, 2);
+            lua_pushboolean(L, 1);
+        }
+        else
+        {
+            CCLOG("CCLoadChunksFromZip() - not found zip file: %s", zipFilePath.c_str());
+            lua_pushboolean(L, 0);
         }
         
-        lua_pop(L, 2);
-        lua_pushboolean(L, 1);
-    }
-    else
-    {
-        lua_pushboolean(L, 0);
-    }
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+        unlink(tmpFilePath.c_str());
+#endif
+    } while (0);
+    
     return 1;
 }
 
