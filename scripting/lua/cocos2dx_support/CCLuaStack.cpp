@@ -362,22 +362,27 @@ int CCLuaStack::executeFunction(int numArgs)
         ret = lua_toboolean(m_state, -1);
     }
     lua_pop(m_state, 1); // remove return value from stack
+
+    if (traceback)
+    {
+        lua_pop(m_state, 1); // remove __G__TRACKBACK__ from stack
+    }
     return ret;
 }
 
 int CCLuaStack::executeFunctionByHandler(int nHandler, int numArgs)
 {
+    int ret = 0;
     if (pushFunctionByHandler(nHandler))                                /* L: ... arg1 arg2 ... func */
     {
         if (numArgs > 0)
         {
             lua_insert(m_state, -(numArgs + 1));                        /* L: ... func arg1 arg2 ... */
         }
-        return executeFunction(numArgs);
+        ret = executeFunction(numArgs);
     }
-
-    lua_pop(m_state, numArgs); // remove args from stack
-    return 0;
+    lua_settop(m_state, 0);
+    return ret;
 }
 
 bool CCLuaStack::executeAssert(bool cond, const char *msg)

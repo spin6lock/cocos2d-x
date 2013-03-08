@@ -76,17 +76,23 @@ void CCLuaEngine::removeScriptHandler(int nHandler)
 
 int CCLuaEngine::executeString(const char *codes)
 {
-    return m_stack->executeString(codes);
+    int ret = m_stack->executeString(codes);
+    m_stack->clean();
+    return ret;
 }
 
 int CCLuaEngine::executeScriptFile(const char* filename)
 {
-    return m_stack->executeScriptFile(filename);
+    int ret = m_stack->executeScriptFile(filename);
+    m_stack->clean();
+    return ret;
 }
 
 int CCLuaEngine::executeGlobalFunction(const char* functionName)
 {
-    return m_stack->executeGlobalFunction(functionName);
+    int ret = m_stack->executeGlobalFunction(functionName);
+    m_stack->clean();
+    return ret;
 }
 
 int CCLuaEngine::executeNodeEvent(CCNode* pNode, int nAction)
@@ -115,7 +121,9 @@ int CCLuaEngine::executeNodeEvent(CCNode* pNode, int nAction)
         default:
             return 0;
     }
-    return m_stack->executeFunctionByHandler(nHandler, 1);
+    int ret = m_stack->executeFunctionByHandler(nHandler, 1);
+    m_stack->clean();
+    return ret;
 }
 
 int CCLuaEngine::executeMenuItemEvent(CCMenuItem* pMenuItem)
@@ -125,7 +133,9 @@ int CCLuaEngine::executeMenuItemEvent(CCMenuItem* pMenuItem)
     
     m_stack->pushInt(pMenuItem->getTag());
     m_stack->pushCCObject(pMenuItem, "CCMenuItem");
-    return m_stack->executeFunctionByHandler(nHandler, 2);
+    int ret = m_stack->executeFunctionByHandler(nHandler, 2);
+    m_stack->clean();
+    return ret;
 }
 
 int CCLuaEngine::executeNotificationEvent(CCNotificationCenter* pNotificationCenter, const char* pszName)
@@ -134,7 +144,9 @@ int CCLuaEngine::executeNotificationEvent(CCNotificationCenter* pNotificationCen
     if (!nHandler) return 0;
     
     m_stack->pushString(pszName);
-    return m_stack->executeFunctionByHandler(nHandler, 1);
+    int ret = m_stack->executeFunctionByHandler(nHandler, 1);
+    m_stack->clean();
+    return ret;
 }
 
 int CCLuaEngine::executeCallFuncActionEvent(CCCallFunc* pAction, CCObject* pTarget/* = NULL*/)
@@ -146,13 +158,17 @@ int CCLuaEngine::executeCallFuncActionEvent(CCCallFunc* pAction, CCObject* pTarg
     {
         m_stack->pushCCObject(pTarget, "CCNode");
     }
-    return m_stack->executeFunctionByHandler(nHandler, pTarget ? 1 : 0);
+    int ret = m_stack->executeFunctionByHandler(nHandler, pTarget ? 1 : 0);
+    m_stack->clean();
+    return ret;
 }
 
 int CCLuaEngine::executeSchedule(int nHandler, float dt, CCNode* pNode/* = NULL*/)
 {
     m_stack->pushFloat(dt);
-    return m_stack->executeFunctionByHandler(nHandler, 1);
+    int ret = m_stack->executeFunctionByHandler(nHandler, 1);
+    m_stack->clean();
+    return ret;
 }
 
 int CCLuaEngine::executeLayerTouchEvent(CCLayer* pLayer, int eventType, CCTouch *pTouch)
@@ -187,7 +203,9 @@ int CCLuaEngine::executeLayerTouchEvent(CCLayer* pLayer, int eventType, CCTouch 
     const CCPoint pt = CCDirector::sharedDirector()->convertToGL(pTouch->getLocationInView());
     m_stack->pushFloat(pt.x);
     m_stack->pushFloat(pt.y);
-    return m_stack->executeFunctionByHandler(nHandler, 3);
+    int ret = m_stack->executeFunctionByHandler(nHandler, 3);
+    m_stack->clean();
+    return ret;
 }
 
 int CCLuaEngine::executeLayerTouchesEvent(CCLayer* pLayer, int eventType, CCSet *pTouches)
@@ -232,7 +250,9 @@ int CCLuaEngine::executeLayerTouchesEvent(CCLayer* pLayer, int eventType, CCSet 
         lua_pushnumber(L, pt.y);
         lua_rawseti(L, -2, i++);
     }
-    return m_stack->executeFunctionByHandler(nHandler, 2);
+    int ret = m_stack->executeFunctionByHandler(nHandler, 2);
+    m_stack->clean();
+    return ret;
 }
 
 int CCLuaEngine::executeLayerKeypadEvent(CCLayer* pLayer, int eventType)
@@ -254,7 +274,9 @@ int CCLuaEngine::executeLayerKeypadEvent(CCLayer* pLayer, int eventType)
         default:
             return 0;
     }
-    return m_stack->executeFunctionByHandler(nHandler, 1);
+    int ret = m_stack->executeFunctionByHandler(nHandler, 1);
+    m_stack->clean();
+    return ret;
 }
 
 int CCLuaEngine::executeAccelerometerEvent(CCLayer* pLayer, CCAcceleration* pAccelerationValue)
@@ -267,7 +289,9 @@ int CCLuaEngine::executeAccelerometerEvent(CCLayer* pLayer, CCAcceleration* pAcc
     m_stack->pushFloat(pAccelerationValue->y);
     m_stack->pushFloat(pAccelerationValue->z);
     m_stack->pushFloat(pAccelerationValue->timestamp);
-    return m_stack->executeFunctionByHandler(nHandler, 4);
+    int ret = m_stack->executeFunctionByHandler(nHandler, 4);
+    m_stack->clean();
+    return ret;
 }
 
 int CCLuaEngine::executeEvent(int nHandler, const char* pEventName, CCObject* pEventSource /* = NULL*/, const char* pEventSourceClassName /* = NULL*/)
@@ -277,12 +301,16 @@ int CCLuaEngine::executeEvent(int nHandler, const char* pEventName, CCObject* pE
     {
         m_stack->pushCCObject(pEventSource, pEventSourceClassName ? pEventSourceClassName : "CCObject");
     }
-    return m_stack->executeFunctionByHandler(nHandler, pEventSource ? 2 : 1);
+    int ret = m_stack->executeFunctionByHandler(nHandler, pEventSource ? 2 : 1);
+    m_stack->clean();
+    return ret;
 }
 
 bool CCLuaEngine::executeAssert(bool cond, const char *msg/* = NULL */)
 {
-    return m_stack->executeAssert(cond, msg);
+    bool ret = m_stack->executeAssert(cond, msg);
+    m_stack->clean();
+    return ret;
 }
 
 NS_CC_END
