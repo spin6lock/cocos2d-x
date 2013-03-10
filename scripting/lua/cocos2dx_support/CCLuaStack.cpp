@@ -30,6 +30,7 @@ extern "C" {
 #include "lualib.h"
 #include "lauxlib.h"
 #include "tolua_fix.h"
+#include "snapshot.h"
 }
 
 #include "LuaCocos2d.h"
@@ -77,6 +78,8 @@ bool CCLuaStack::init(void)
     lua_pushcfunction(m_state, loadChunksFromZip);
     lua_setglobal(m_state, "CCLuaLoadChunksFromZip");
     
+    luaopen_snapshot(m_state);
+    
     return true;
 }
 
@@ -91,32 +94,24 @@ void CCLuaStack::addSearchPath(const char* path)
     lua_getglobal(m_state, "package");                                  /* L: package */
     lua_getfield(m_state, -1, "path");                /* get package.path, L: package path */
     const char* cur_path =  lua_tostring(m_state, -1);
-    lua_pop(m_state, 1);                                                /* L: package */
-    lua_pushfstring(m_state, "%s;%s/?.lua", cur_path, path);            /* L: package newpath */
-    lua_setfield(m_state, -2, "path");          /* package.path = newpath, L: package */
-    lua_pop(m_state, 1);                                                /* L: - */
+    lua_pushfstring(m_state, "%s;%s/?.lua", cur_path, path);            /* L: package path newpath */
+    lua_setfield(m_state, -3, "path");          /* package.path = newpath, L: package path */
+    lua_pop(m_state, 2);                                                /* L: - */
 }
 
 void CCLuaStack::addLuaLoader(lua_CFunction func)
 {
     if (!func) return;
     
-    // stack content after the invoking of the function
-    // get loader table
     lua_getglobal(m_state, "package");                                  /* L: package */
     lua_getfield(m_state, -1, "loaders");                               /* L: package, loaders */
-    
-    // insert loader into index 2
     lua_pushcfunction(m_state, func);                                   /* L: package, loaders, func */
     for (int i = lua_objlen(m_state, -2) + 1; i > 2; --i)
     {
         lua_rawgeti(m_state, -2, i - 1);                                /* L: package, loaders, func, function */
-        // we call lua_rawgeti, so the loader table now is at -3
         lua_rawseti(m_state, -3, i);                                    /* L: package, loaders, func */
     }
     lua_rawseti(m_state, -2, 2);                                        /* L: package, loaders */
-    
-    // set loaders into package
     lua_setfield(m_state, -2, "loaders");                               /* L: package */
     
     lua_pop(m_state, 1);
@@ -322,6 +317,7 @@ int CCLuaStack::executeFunction(int numArgs)
     if (!lua_isfunction(m_state, functionIndex))
     {
         CCLOG("value at stack [%d] is not function", functionIndex);
+        lua_pop(m_state, numArgs + 1); // remove function and arguments
         return 0;
     }
 
@@ -339,7 +335,7 @@ int CCLuaStack::executeFunction(int numArgs)
     
     int error = 0;
     ++m_callFromLua;
-    error = lua_pcall(m_state, numArgs, 1, traceback);                  /* L: ... ret */
+    error = lua_pcall(m_state, numArgs, 1, traceback);                  /* L: ... [G] ret */
     --m_callFromLua;
     if (error)
     {
@@ -347,6 +343,10 @@ int CCLuaStack::executeFunction(int numArgs)
         {
             CCLOG("[LUA ERROR] %s", lua_tostring(m_state, - 1));        /* L: ... error */
             lua_pop(m_state, 1); // remove error message from stack
+        }
+        else                                                            /* L: ... G error */
+        {
+            lua_pop(m_state, 2); // remove __G__TRACKBACK__ and error message from stack
         }
         return 0;
     }
@@ -361,12 +361,14 @@ int CCLuaStack::executeFunction(int numArgs)
     {
         ret = lua_toboolean(m_state, -1);
     }
-    lua_pop(m_state, 1); // remove return value from stack
-
+    // remove return value from stack
+    lua_pop(m_state, 1);                                                /* L: ... [G] */
+    
     if (traceback)
     {
-        lua_pop(m_state, 1); // remove __G__TRACKBACK__ from stack
+        lua_pop(m_state, 1); // remove __G__TRACKBACK__ from stack      /* L: ... */
     }
+    
     return ret;
 }
 
