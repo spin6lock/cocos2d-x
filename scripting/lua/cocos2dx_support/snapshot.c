@@ -10,7 +10,7 @@
 #define bool int
 #define true 1
 #define false 0
-#elif defin ed(__GNUC__) && !defined(__STRICT_ANSI__)
+#elif defined(__GNUC__) && !defined(__STRICT_ANSI__)
 /* Define _Bool, bool, false, true as a GNU extension. */
 #define _Bool bool
 #define bool  bool
@@ -304,7 +304,7 @@ static void
         lua_pop(L,1);
 }
 
-static void 
+static void
     mark_object(lua_State *L, lua_State *dL, const void * parent, const char *desc) {
         int t = lua_type(L, -1);
         switch (t) {
