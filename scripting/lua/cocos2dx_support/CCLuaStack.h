@@ -110,6 +110,8 @@ public:
     virtual int executeFunctionByHandler(int nHandler, int numArgs);
     virtual bool executeAssert(bool cond, const char *msg);
     
+    virtual int loadChunksFromZip(const char *zipFilePath);
+    
 protected:
     CCLuaStack(void)
     : m_state(NULL)

@@ -396,6 +396,15 @@ bool CCLuaStack::executeAssert(bool cond, const char *msg)
     return true;
 }
 
+int CCLuaStack::loadChunksFromZip(const char *zipFilePath)
+{
+    pushString(zipFilePath);
+    loadChunksFromZip(m_state);
+    int ret = lua_toboolean(m_state, -1);
+    lua_pop(m_state, 1);
+    return ret;
+}
+
 int cc_lua_require(lua_State *L)
 {
     lua_pushvalue(L, lua_upvalueindex(1));
@@ -408,6 +417,9 @@ int CCLuaStack::loadChunksFromZip(lua_State *L)
     const char *zipFilename = lua_tostring(L, -1);
     CCFileUtils *utils = CCFileUtils::sharedFileUtils();
     string zipFilePath = utils->fullPathForFilename(zipFilename);
+    
+    lua_pop(L, 1);
+    zipFilename = NULL;
     
     do
     {
