@@ -427,18 +427,39 @@ int CCLuaStack::loadChunksFromZip(lua_State *L)
         string tmpFilePath = utils->getWriteablePath().append("cc_load_chunks.tmp");
         unsigned long size = 0;
         unsigned char *buffer = utils->getFileData(zipFilePath.c_str(), "rb", &size);
-        FILE *tmp = fopen(tmpFilePath.c_str(), "wb");
-        if (tmp)
+        bool success = false;
+        do
         {
-            fwrite(buffer, 1, size, tmp);
+            if (size == 0 || !buffer)
+            {
+                CCLOG("CCLoadChunksFromZip() - read source file %s failure", zipFilePath.c_str());
+                break;
+            }
+            
+            FILE *tmp = fopen(tmpFilePath.c_str(), "wb");
+            if (!tmp)
+            {
+                CCLOG("CCLoadChunksFromZip() - create tmp file %s failure", tmpFilePath.c_str());
+                break;
+            }
+            
+            success = fwrite(buffer, 1, size, tmp) > 0;
             fclose(tmp);
-            delete []buffer;
-            zipFilePath = tmpFilePath;
-            CCLOG("CCLoadChunksFromZip() - copy zip file to %s", tmpFilePath.c_str());
-        }
-        else
+            
+            if (success)
+            {
+                zipFilePath = tmpFilePath;
+                CCLOG("CCLoadChunksFromZip() - copy zip file to %s ok", tmpFilePath.c_str());
+            }
+        } while (0);
+
+        if (buffer)
         {
-            CCLOG("CCLoadChunksFromZip() - copy zip file to %s failure", tmpFilePath.c_str());
+            delete []buffer;
+        }
+
+        if (!success)
+        {
             lua_pushboolean(L, 0);
             break;
         }
@@ -451,6 +472,8 @@ int CCLuaStack::loadChunksFromZip(lua_State *L)
             lua_getglobal(L, "package");
             lua_getfield(L, -1, "preload");
             
+            CCLOG("CCLoadChunksFromZip() - began");
+            int count = 0;
             string filename = zip->getFirstFilename();
             while (filename.length())
             {
@@ -462,10 +485,13 @@ int CCLuaStack::loadChunksFromZip(lua_State *L)
                     lua_pushcclosure(L, &cc_lua_require, 1);
                     lua_setfield(L, -2, filename.c_str());
                     delete []buffer;
-                    CCLOG("CCLoadChunksFromZip() - chunk %s", filename.c_str());
+                    ++count;
+                    // CCLOG("CCLoadChunksFromZip() - chunk %s", filename.c_str());
                 }
                 filename = zip->getNextFilename();
             }
+            
+            CCLOG("CCLoadChunksFromZip() - ended, chunks count %d", count);
             
             lua_pop(L, 2);
             lua_pushboolean(L, 1);
