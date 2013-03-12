@@ -68,6 +68,7 @@ layers_scenes_transitions_nodes/CCTransitionProgress.cpp \
 menu_nodes/CCMenu.cpp \
 menu_nodes/CCMenuItem.cpp \
 misc_nodes/CCClippingNode.cpp \
+misc_nodes/CCClippingRegionNode.cpp \
 misc_nodes/CCMotionStreak.cpp \
 misc_nodes/CCProgressTimer.cpp \
 misc_nodes/CCRenderTexture.cpp \
