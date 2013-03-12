@@ -33,6 +33,7 @@ $pfile "CCLayer.pkg"
 $pfile "CCScene.pkg"
 $pfile "CCTransition.pkg"
 $pfile "CCTransitionProgress.pkg"
+$pfile "CCClippingNode.pkg"
 
 $pfile "CCScheduler.pkg"
 

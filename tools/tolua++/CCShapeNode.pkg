@@ -1,6 +1,4 @@
 
-$#include "draw_nodes/CCShapeNode.h"
-
 class CCShapeNode : public CCNode
 {
     const ccColor4F& getColor(void);
