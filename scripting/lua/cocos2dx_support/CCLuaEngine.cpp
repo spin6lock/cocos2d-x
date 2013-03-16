@@ -118,6 +118,10 @@ int CCLuaEngine::executeNodeEvent(CCNode* pNode, int nAction)
             m_stack->pushString("exitTransitionStart");
             break;
             
+        case kCCNodeOnCleanup:
+            m_stack->pushString("cleanup");
+            break;
+            
         default:
             return 0;
     }
@@ -264,11 +268,11 @@ int CCLuaEngine::executeLayerKeypadEvent(CCLayer* pLayer, int eventType)
     switch (eventType)
     {
         case kTypeBackClicked:
-            m_stack->pushString("backClicked");
+            m_stack->pushString("back");
             break;
             
         case kTypeMenuClicked:
-            m_stack->pushString("menuClicked");
+            m_stack->pushString("menu");
             break;
             
         default:

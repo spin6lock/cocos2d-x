@@ -1069,10 +1069,10 @@ void CCSprite::updateBlendFunc(void)
 
 void CCSprite::setTexture(CCTexture2D *texture)
 {
-    // If batchnode, then texture id should be the same
-    CCAssert(! m_pobBatchNode || texture->getName() == m_pobBatchNode->getTexture()->getName(), "CCSprite: Batched sprites should use the same texture as the batchnode");
     // accept texture==nil as argument
     CCAssert( !texture || dynamic_cast<CCTexture2D*>(texture), "setTexture expects a CCTexture2D. Invalid argument");
+    // If batchnode, then texture id should be the same
+    CCAssert(! m_pobBatchNode || texture->getName() == m_pobBatchNode->getTexture()->getName(), "CCSprite: Batched sprites should use the same texture as the batchnode");
 
     if (!m_pobBatchNode && m_pobTexture != texture)
     {
