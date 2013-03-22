@@ -694,7 +694,7 @@ void CCTextureCache::dumpCachedTextureInfo()
         unsigned int bytes = tex->getPixelsWide() * tex->getPixelsHigh() * bpp / 8;
         totalBytes += bytes;
         count++;
-        CCLOG("cocos2d: \"%s\" rc=%lu id=%lu %lu x %lu @ %ld bpp => %lu KB",
+        CCLOG("\"%s\" rc=%lu id=%lu %lu x %lu @ %ld bpp => %lu KB",
                pElement->getStrKey(),
                (long)tex->retainCount(),
                (long)tex->getName(),
@@ -704,7 +704,7 @@ void CCTextureCache::dumpCachedTextureInfo()
                (long)bytes / 1024);
     }
 
-    CCLOG("cocos2d: CCTextureCache dumpDebugInfo: %ld textures, for %lu KB (%.2f MB)", (long)count, (long)totalBytes / 1024, totalBytes / (1024.0f*1024.0f));
+    CCLOG("CCTextureCache dumpDebugInfo: %ld textures, for %lu KB (%.2f MB)", (long)count, (long)totalBytes / 1024, totalBytes / (1024.0f*1024.0f));
 }
 
 #if CC_ENABLE_CACHE_TEXTURE_DATA

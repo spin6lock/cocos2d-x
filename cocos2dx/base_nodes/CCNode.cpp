@@ -897,7 +897,7 @@ void CCNode::onEnterTransitionDidFinish()
 {
     arrayMakeObjectsPerformSelector(m_pChildren, onEnterTransitionDidFinish, CCNode*);
 
-    if (m_eScriptType == kScriptTypeJavascript)
+    if (m_eScriptType != kScriptTypeNone)
     {
         CCScriptEngineManager::sharedManager()->getScriptEngine()->executeNodeEvent(this, kCCNodeOnEnterTransitionDidFinish);
     }
@@ -907,7 +907,7 @@ void CCNode::onExitTransitionDidStart()
 {
     arrayMakeObjectsPerformSelector(m_pChildren, onExitTransitionDidStart, CCNode*);
 
-    if (m_eScriptType == kScriptTypeJavascript)
+    if (m_eScriptType != kScriptTypeNone)
     {
         CCScriptEngineManager::sharedManager()->getScriptEngine()->executeNodeEvent(this, kCCNodeOnExitTransitionDidStart);
     }

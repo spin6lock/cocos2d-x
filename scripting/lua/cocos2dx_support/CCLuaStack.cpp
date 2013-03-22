@@ -75,9 +75,11 @@ bool CCLuaStack::init(void)
     addLuaLoader(loader_Android);
 #endif
     
+    // register CCLuaLoadChunksFromZip
     lua_pushcfunction(m_state, loadChunksFromZip);
     lua_setglobal(m_state, "CCLuaLoadChunksFromZip");
     
+    // register CCLuaStackSnapshot
     luaopen_snapshot(m_state);
     
     return true;

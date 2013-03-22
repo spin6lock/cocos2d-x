@@ -32,8 +32,9 @@ void CCClippingRegionNode::visit()
     {
         glEnable(GL_SCISSOR_TEST);
         
-        CCDirector::sharedDirector()->getOpenGLView()->setScissorInPoints(m_clippingRegion.origin.x * m_fScaleX,
-                                                                          m_clippingRegion.origin.y * m_fScaleX,
+        const CCPoint pos = convertToWorldSpace(CCPoint(m_clippingRegion.origin.x, m_clippingRegion.origin.y));
+        CCDirector::sharedDirector()->getOpenGLView()->setScissorInPoints(pos.x * m_fScaleX,
+                                                                          pos.y * m_fScaleX,
                                                                           m_clippingRegion.size.width * m_fScaleY,
                                                                           m_clippingRegion.size.height * m_fScaleY);
     }
