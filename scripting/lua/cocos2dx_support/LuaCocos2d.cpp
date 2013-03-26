@@ -1,6 +1,6 @@
 /*
 ** Lua binding: Cocos2d
-** Generated automatically by tolua++-1.0.92 on Tue Mar 12 23:36:56 2013.
+** Generated automatically by tolua++-1.0.92 on Tue Mar 26 15:12:19 2013.
 */
 
 /****************************************************************************
@@ -8546,6 +8546,39 @@ static int tolua_Cocos2d_CCNode_getZOrder00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'getZOrder'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setZOrder of class  CCNode */
+#ifndef TOLUA_DISABLE_tolua_Cocos2d_CCNode_setZOrder00
+static int tolua_Cocos2d_CCNode_setZOrder00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"CCNode",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  CCNode* self = (CCNode*)  tolua_tousertype(tolua_S,1,0);
+  int zorder = ((int)  tolua_tonumber(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setZOrder'", NULL);
+#endif
+  {
+   self->setZOrder(zorder);
+  }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setZOrder'.",&tolua_err);
  return 0;
 #endif
 }
@@ -43539,6 +43572,7 @@ TOLUA_API int tolua_Cocos2d_open (lua_State* tolua_S)
   tolua_cclass(tolua_S,"CCNode","CCNode","CCObject",NULL);
   tolua_beginmodule(tolua_S,"CCNode");
    tolua_function(tolua_S,"getZOrder",tolua_Cocos2d_CCNode_getZOrder00);
+   tolua_function(tolua_S,"setZOrder",tolua_Cocos2d_CCNode_setZOrder00);
    tolua_function(tolua_S,"getVertexZ",tolua_Cocos2d_CCNode_getVertexZ00);
    tolua_function(tolua_S,"setVertexZ",tolua_Cocos2d_CCNode_setVertexZ00);
    tolua_function(tolua_S,"getRotation",tolua_Cocos2d_CCNode_getRotation00);
