@@ -10,6 +10,9 @@ class CCLayer : public CCNode
     void setKeypadEnabled(bool bValue);
     bool isKeypadEnabled();
 
+    void setTouchPriority(int priority);
+    int getTouchPriority();
+
     void registerScriptTouchHandler(LUA_FUNCTION nHandler,
                                     bool bIsMultiTouches = false,
                                     int nPriority = 0,
