@@ -253,6 +253,8 @@ int CCLuaEngine::executeLayerTouchesEvent(CCLayer* pLayer, int eventType, CCSet 
         lua_rawseti(L, -2, i++);
         lua_pushnumber(L, pt.y);
         lua_rawseti(L, -2, i++);
+        lua_pushinteger(L, pTouch->getID());
+        lua_rawseti(L, -2, i++);
     }
     int ret = m_stack->executeFunctionByHandler(nHandler, 2);
     m_stack->clean();
