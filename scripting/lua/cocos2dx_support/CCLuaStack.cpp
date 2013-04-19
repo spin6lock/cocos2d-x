@@ -131,19 +131,8 @@ void CCLuaStack::removeScriptHandler(int nHandler)
 
 int CCLuaStack::executeString(const char *codes)
 {
-    ++m_callFromLua;
-    int nRet = luaL_dostring(m_state, codes);
-    --m_callFromLua;
-    CC_ASSERT(m_callFromLua >= 0);
-    lua_gc(m_state, LUA_GCCOLLECT, 0);
-    
-    if (nRet != 0)
-    {
-        CCLOG("[LUA ERROR] %s", lua_tostring(m_state, -1));
-        lua_pop(m_state, 1);
-        return nRet;
-    }
-    return 0;
+    luaL_loadstring(m_state, codes);
+    return executeFunction(0);
 }
 
 int CCLuaStack::executeScriptFile(const char* filename)
@@ -179,30 +168,7 @@ int CCLuaStack::executeGlobalFunction(const char* functionName)
         lua_pop(m_state, 1);
         return 0;
     }
-    
-    ++m_callFromLua;
-    int error = lua_pcall(m_state, 0, 1, 0);             /* call function, stack: ret */
-    --m_callFromLua;
-    CC_ASSERT(m_callFromLua >= 0);
-    // lua_gc(m_state, LUA_GCCOLLECT, 0);
-    
-    if (error)
-    {
-        CCLOG("[LUA ERROR] %s", lua_tostring(m_state, - 1));
-        lua_pop(m_state, 1); // clean error message
-        return 0;
-    }
-    
-    // get return value
-    if (!lua_isnumber(m_state, -1))
-    {
-        lua_pop(m_state, 1);
-        return 0;
-    }
-    
-    int ret = lua_tointeger(m_state, -1);
-    lua_pop(m_state, 1);                                                /* stack: - */
-    return ret;
+    return executeFunction(0);
 }
 
 void CCLuaStack::clean(void)
