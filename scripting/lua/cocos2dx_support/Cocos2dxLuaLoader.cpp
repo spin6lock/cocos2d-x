@@ -46,8 +46,10 @@ extern "C"
         }
         filename.append(".lua");
         
-        CCString* pFileContent = NULL;
-        
+        // search file in package.path
+        unsigned char* codeBuffer = NULL;
+        unsigned long codeBufferSize = 0;
+        std::string codePath;
         CCFileUtils* utils = CCFileUtils::sharedFileUtils();
         
         lua_getglobal(L, "package");
@@ -56,7 +58,7 @@ extern "C"
         lua_pop(L, 1);
         int begin = 0;
         int next = searchpath.find_first_of(";", 0);
-
+        
         do
         {
             if (next == std::string::npos) next = searchpath.length();
@@ -67,31 +69,32 @@ extern "C"
             }
             
             pos = prefix.find("?.lua");
-            std::string path = prefix.substr(0, pos).append(filename);
-            path = utils->fullPathForFilename(path.c_str());
-            if (utils->isFileExist(path))
+            codePath = prefix.substr(0, pos).append(filename);
+            codePath = utils->fullPathForFilename(codePath.c_str());
+            if (utils->isFileExist(codePath))
             {
-                pFileContent = CCString::createWithContentsOfFile(path.c_str());
+                codeBuffer = utils->getFileData(codePath.c_str(), "rb", &codeBufferSize);
                 break;
             }
             
             begin = next + 1;
             next = searchpath.find_first_of(";", begin);
         } while (begin < (int)searchpath.length());
-
-        if (pFileContent)
+        
+        if (codeBuffer)
         {
-            if (luaL_loadstring(L, pFileContent->getCString()) != 0)
+            if (luaL_loadbuffer(L, (char*)codeBuffer, codeBufferSize, codePath.c_str()) != 0)
             {
                 luaL_error(L, "error loading module %s from file %s :\n\t%s",
                     lua_tostring(L, 1), filename.c_str(), lua_tostring(L, -1));
             }
+            delete []codeBuffer;
         }
         else
         {
             CCLog("can not get file data of %s", filename.c_str());
         }
-
+        
         return 1;
     }
 }
