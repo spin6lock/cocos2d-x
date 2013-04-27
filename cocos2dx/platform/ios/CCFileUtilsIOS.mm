@@ -151,8 +151,17 @@ static NSFileManager* s_fileManager = [NSFileManager defaultManager];
 
 std::string CCFileUtilsIOS::getWriteablePath()
 {
-    // save to document folder
+    // save to cache folder
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    std::string strRet = [documentsDirectory UTF8String];
+    strRet.append("/");
+    return strRet;
+}
+
+std::string CCFileUtilsIOS::getDocumentsPath(void)
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths objectAtIndex:0];
     std::string strRet = [documentsDirectory UTF8String];
     strRet.append("/");

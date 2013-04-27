@@ -14,6 +14,7 @@ class CCFileUtils
     void addSearchPath(const char* path);
 
     std::string getWriteablePath();
+    std::string getDocumentsPath();
 
     void setPopupNotify(bool bNotify);
     bool isPopupNotify();

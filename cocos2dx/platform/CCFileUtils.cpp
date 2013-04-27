@@ -638,6 +638,11 @@ bool CCFileUtils::isAbsolutePath(const std::string& strPath)
     return strPath[0] == '/' ? true : false;
 }
 
+std::string CCFileUtils::getDocumentsPath(void)
+{
+    return getWriteablePath();
+}
+
 //////////////////////////////////////////////////////////////////////////
 // Notification support when getFileData from invalid file path.
 //////////////////////////////////////////////////////////////////////////

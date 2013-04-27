@@ -273,6 +273,12 @@ public:
     virtual std::string getWriteablePath() = 0;
     
     /**
+     ** Gets the documents path.
+     * @return   The path of documents.
+     */
+    virtual std::string getDocumentsPath(void);
+    
+    /**
      *  Checks whether a file exists.
      *
      *  @note If a relative path was passed in, it will be inserted a default root path at the beginning.
