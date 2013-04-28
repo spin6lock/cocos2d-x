@@ -168,7 +168,7 @@ public:
  * 
  */
  
-class CCEditBox
+class CC_DLL CCEditBox
 : public CCControlButton
 , public CCIMEDelegate
 {

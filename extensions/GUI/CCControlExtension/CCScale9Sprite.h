@@ -40,7 +40,7 @@ NS_CC_EXT_BEGIN
  * @{
  */
 
-class CCScale9Sprite : public CCNode, public CCRGBAProtocol
+class CC_DLL CCScale9Sprite : public CCNode, public CCRGBAProtocol
 {
 public:
     CCScale9Sprite();
