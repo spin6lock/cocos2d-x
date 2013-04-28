@@ -78,8 +78,8 @@ SimpleAudioEngine::SimpleAudioEngine()
     
 	if (strcmp(I9100_MODEL, deviceModel) == 0)
 	{
-		LOGD("i9100 model\nSwitch to OpenSLES");
-		s_bI9100 = true;
+		// LOGD("i9100 model\nSwitch to OpenSLES");
+		// s_bI9100 = true;
 	}
     
 	methodInfo.env->ReleaseStringUTFChars(jstr, deviceModel);
