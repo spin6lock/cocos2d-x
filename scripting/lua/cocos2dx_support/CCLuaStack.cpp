@@ -159,7 +159,7 @@ int CCLuaStack::executeScriptFile(const char* filename)
 #endif
 }
 
-int CCLuaStack::executeGlobalFunction(const char* functionName)
+int CCLuaStack::executeGlobalFunction(const char* functionName, int numArgs /* = 0 */)
 {
     lua_getglobal(m_state, functionName);       /* query function by name, stack: function */
     if (!lua_isfunction(m_state, -1))
@@ -168,7 +168,7 @@ int CCLuaStack::executeGlobalFunction(const char* functionName)
         lua_pop(m_state, 1);
         return 0;
     }
-    return executeFunction(0);
+    return executeFunction(numArgs);
 }
 
 void CCLuaStack::clean(void)

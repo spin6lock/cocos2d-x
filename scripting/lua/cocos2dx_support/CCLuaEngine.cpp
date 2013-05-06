@@ -88,9 +88,9 @@ int CCLuaEngine::executeScriptFile(const char* filename)
     return ret;
 }
 
-int CCLuaEngine::executeGlobalFunction(const char* functionName)
+int CCLuaEngine::executeGlobalFunction(const char* functionName, int numArgs /* = 0 */)
 {
-    int ret = m_stack->executeGlobalFunction(functionName);
+    int ret = m_stack->executeGlobalFunction(functionName, numArgs);
     m_stack->clean();
     return ret;
 }

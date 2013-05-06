@@ -194,7 +194,7 @@ public:
      @param functionName String object holding the name of the function, in the global script environment, that is to be executed.
      @return The integer value returned from the script function.
      */
-    virtual int executeGlobalFunction(const char* functionName) = 0;
+    virtual int executeGlobalFunction(const char* functionName, int numArgs = 0) = 0;
     
     /**
      @brief Execute a node event function
