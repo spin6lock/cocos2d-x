@@ -78,7 +78,7 @@ public:
     void replace(CCPoint &point, unsigned int index);
     
     /** get the value of a point at a given index */
-    CCPoint get(unsigned int index);
+    const CCPoint get(unsigned int index);
     
     /** deletes a point at a given index */
     void remove(unsigned int index);

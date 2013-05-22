@@ -147,7 +147,7 @@ void CCPointArray::insert(CCPoint &point, unsigned int index)
     m_pPoints->insert(m_pPoints->begin() + index, temp);
 }
 
-CCPoint CCPointArray::get(unsigned int index)
+const CCPoint CCPointArray::get(unsigned int index)
 {
     index = MIN(m_pPoints->size()-1, MAX(index, 0));
     return *(m_pPoints->at(index));
